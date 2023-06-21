@@ -12,10 +12,10 @@
 
 
 	<!-- Bootstrap core CSS -->
-  <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  	<link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
-  <link th:href="@{css/heroic-features.css}" rel="stylesheet">
+  	<!-- Custom styles for this template -->
+  	<link th:href="@{css/heroic-features.css}" rel="stylesheet">
 
 
 </head>
@@ -23,8 +23,7 @@
 <body>
 
   <!-- Navigation -->
-   	<div th:include="administrador/template_admin.html::header"></div>
-
+   <div th:include="administrador/template_admin.html::header"></div>
 
 <!-- Page Content -->
 <div class="container">
@@ -40,7 +39,7 @@
     <li class="breadcrumb-item active">Ver Productos</li>
   </ol>
 
-  <a class="btn btn-primary" href="#" > Crear Producto</a>
+  <a class="btn btn-primary" th:href="@{productos/create}" > Crear Producto</a>
   <h2>Productos</h2>
   <table class="table">
     <thead>
@@ -54,12 +53,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td ></td>
-        <td ></td>
-        <td ></td>
-        <td ></td>
-        <td><a  class="btn btn-warning" href="">Editar</a> </td>
+      <tr th:each="p:${productos}">
+        <td th:text="${p.nombre}"></td>
+        <td th:text="${p.descripcion}"></td>
+        <td th:text="${p.cantidad}"></td>
+        <td th:text="${p.precio}"></td>
+        <td><a  class="btn btn-warning" th:href="@{productos/edit/{id}(id=${p.id})}">Editar</a> </td>
         <td><a  class="btn btn-danger" href="">Eliminar</a> </td>
       </tr>       
     </tbody>
