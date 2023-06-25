@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Spring eCommerce</title>
+	<title>Spring eCommerceHH</title>
 
 
 	<!-- Bootstrap core CSS -->
@@ -22,7 +22,7 @@
 <body>
 
 	<!-- Navigation -->
-	<div th:include="administrador/template_admin.html::header"></div>
+	<div th:include="usuario/template_usuario.html::header"></div>
 
 	<!-- Page Content -->
 	<div class="container">
@@ -43,7 +43,7 @@
 						<p class="card-text" th:text="${producto.nombre}"></p>
 					</div>
 					<div class="card-footer">
-						<a href="productohome.html" class="btn btn-success">Ver producto</a>
+						<a th:href="@{productohome/{id} (id=${producto.id})}" class="btn btn-success">Ver producto</a>
 					</div>
 				</div>
 			</div>
@@ -55,8 +55,7 @@
 	<!-- /.container -->
 
 	<!-- Footer -->
-	<div th:include="administrador/template_admin.html::footer"></div>
-
+	<div th:include="usuario/template_usuario.html::footer"></div>
 	<!-- Bootstrap core JavaScript -->
 	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
 	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
