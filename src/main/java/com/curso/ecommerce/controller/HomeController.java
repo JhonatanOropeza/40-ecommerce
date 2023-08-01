@@ -30,7 +30,7 @@ public class HomeController {
 	@Autowired
 	private ProductoService productoService;
 	
-	//Objeto para alamacenar los detalles de la orden
+	//Objeto para alamacenar los detalles de la orden ESTA LISTA ES GLOBAL
 	List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
 	
 	//Objeto para almacenar los datos de la orden
@@ -73,7 +73,14 @@ public class HomeController {
 		detalleOrden.setTotal(producto.getPrecio()*cantidad);
 		detalleOrden.setProducto(producto);
 		
-		detalles.add(detalleOrden);
+		//Validar que el producto no se añada más de dos veces
+		Integer idProducto= producto.getId();
+		boolean ingresado=detalles.stream().anyMatch(p -> p.getProducto().getId()== idProducto);
+		
+		if (!ingresado) {
+			detalles.add(detalleOrden);
+		}
+		
 		sumaTotal = detalles.stream().mapToDouble(dt->dt.getTotal()).sum();
 		
 		orden.setTotal(sumaTotal);
@@ -82,4 +89,36 @@ public class HomeController {
 		
 		return "usuario/carrito";
 	}
+	
+	//Quitar un producto de la vista donde se muestra el carrito de compras.
+	@GetMapping("/delete/cart/{id}")
+	public String deleteProductoCart(@PathVariable Integer id, Model model) {
+		//Lista actualizada de productos
+		List<DetalleOrden> ordenesNueva = new ArrayList<DetalleOrden>();
+		
+		for(DetalleOrden detalleOrden: detalles) {
+			if(detalleOrden.getProducto().getId() != id) {
+				ordenesNueva.add(detalleOrden);
+			}
+		}
+		//Actualizar variable global de lista de productos en carrito
+		detalles = ordenesNueva;
+		
+		double sumaTotal = 0;
+		sumaTotal = detalles.stream().mapToDouble(dt->dt.getTotal()).sum();
+		
+		orden.setTotal(sumaTotal);
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+		
+		return "usuario/carrito";
+	}
+	//Para obtener el carrito de compras desde cualquier parte de aplicación
+	@GetMapping("/getCart")
+	public String getCart(Model model) {
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+		return "/usuario/carrito";
+	}
+	
 }
